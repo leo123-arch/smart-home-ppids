@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Home Security | Privacy-Preserving PP-IDS</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="header-bar">
+    <div class="logo-area">
+      <div class="logo-icon">&#x1F6E1;</div>
+      <div class="logo-text">
+        <h1>SMART HOME PP-IDS</h1>
+        <div class="subtitle">Federated Learning &bull; Differential Privacy &bull; DDoS Detection</div>
+      </div>
+    </div>
+    
+    <div class="header-status-pills">
+      <div id="attackStatusPill" class="status-pill safe">
+        <span class="status-dot">&#x25CF;</span>
+        <span id="attackStatusText">NETWORK SECURE</span>
+      </div>
+      <div class="status-pill privacy">
+        <span>&#x1F512; Privacy Budget:</span>
+        <span id="headerEpsilonText">&epsilon; = 0.0</span>
+      </div>
+      <div class="status-pill">
+        <span>&#x2699; FL Round:</span>
+        <span id="headerRoundText">#0</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+    
+    <!-- Top Summary Metrics Grid -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">DDoS Detection Accuracy</div>
+        <div class="metric-val" id="metricAccuracy">--%</div>
+        <div class="metric-sub" id="metricF1">F1-Score: --%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Privacy Loss (&epsilon;, &delta;)</div>
+        <div class="metric-val" id="metricEpsilon">&epsilon; = 0.0</div>
+        <div class="metric-sub" id="metricPrivacyTier">Guarantee: Initializing</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Federated Learning Rounds</div>
+        <div class="metric-val" id="metricRounds">0</div>
+        <div class="metric-sub" id="metricClientsActive">5 Edge IoT Clients</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Active Mitigations & Rules</div>
+        <div class="metric-val" id="metricMitigations">0</div>
+        <div class="metric-sub" id="metricAlertCount">0 Total Incidents</div>
+      </div>
+    </section>
+
+    <!-- Row 1: Smart Home Devices Fleet & Attack Simulator -->
+    <div class="dashboard-row">
+      <!-- Device Fleet -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <h2><span>&#x1F3E0;</span> Smart Home IoT Edge Devices</h2>
+          <span class="panel-badge">Edge Decentralized Training</span>
+        </div>
+        <div class="devices-container" id="devicesContainer">
+          <!-- Populated dynamically via JS -->
+          <div class="empty-state">Loading smart home edge nodes...</div>
+        </div>
+      </section>
+
+      <!-- Attack Simulation Controller -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <h2><span>&#x26A1;</span> DDoS Attack Simulator</h2>
+          <span class="panel-badge">Adversarial Injection</span>
+        </div>
+        
+        <form class="attack-form" onsubmit="return false;">
+          <div class="form-group">
+            <label for="attackTypeSelect">Attack Vector</label>
+            <select id="attackTypeSelect" class="form-control">
+              <option value="syn_flood">TCP SYN Flood (Volumetric Port Overwhelm)</option>
+              <option value="udp_flood">UDP Amplification (DNS/NTP Reflection)</option>
+              <option value="http_flood">Layer-7 HTTP Flood (Web/API Starvation)</option>
+              <option value="mirai_burst">Mirai Botnet Burst (Multi-Vector Flood)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="targetDeviceSelect">Target Smart Device</label>
+            <select id="targetDeviceSelect" class="form-control">
+              <option value="smart_gateway_01">Central Home Gateway (192.168.1.1)</option>
+              <option value="smart_cam_01">4K Security Cam (192.168.1.101)</option>
+              <option value="smart_thermostat_01">Climate Thermostat (192.168.1.105)</option>
+              <option value="smart_lock_01">Smart Door Lock (192.168.1.110)</option>
+              <option value="smart_speaker_01">Voice Assistant Speaker (192.168.1.115)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="attackIntensityRange">Attack Intensity: <span id="intensityVal">1.5x</span></label>
+            <input type="range" id="attackIntensityRange" class="form-control" min="0.5" max="4.0" step="0.5" value="1.5">
+          </div>
+
+          <div class="attack-buttons">
+            <button type="button" id="btnStartAttack" class="btn btn-danger">&#x1F525; Launch DDoS Attack</button>
+            <button type="button" id="btnStopAttack" class="btn btn-secondary">&#x23F9; Halt Attack</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- Row 2: Privacy Preserving Federated Learning Control & Charts -->
+    <div class="dashboard-row">
+      
+      <!-- Privacy & FL Training Studio -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <h2><span>&#x1F510;</span> Privacy-Preserving Federated Training</h2>
+          <span class="panel-badge">DP-SGD &bull; FedAvg</span>
+        </div>
+
+        <div class="privacy-explainer">
+          <strong>Privacy Guarantee:</strong> Raw IoT network flows never leave smart home devices. Edge nodes compute local weight updates &Delta;W, clip to L<sub>2</sub> norm bound <em>C</em>, add calibrated Gaussian noise &sigma;, and send only perturbed updates to the central aggregator.
+        </div>
+
+        <div class="fl-controls-grid">
+          <div class="form-group">
+            <label for="dpNoiseInput">DP Noise Multiplier (&sigma;)</label>
+            <input type="number" id="dpNoiseInput" class="form-control" min="0.05" max="2.0" step="0.05" value="0.25">
+          </div>
+          <div class="form-group">
+            <label for="dpClipInput">L<sub>2</sub> Clipping Norm (C)</label>
+            <input type="number" id="dpClipInput" class="form-control" min="0.5" max="5.0" step="0.5" value="1.0">
+          </div>
+        </div>
+
+        <div class="attack-buttons" style="margin-top: 1rem;">
+          <button type="button" id="btnTrainOneRound" class="btn btn-primary">&#x25B6; Train 1 Round (DP-FL)</button>
+          <button type="button" id="btnTrainFiveRounds" class="btn btn-purple">&#x23E9; Train 5 Rounds</button>
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <button type="button" id="btnToggleAutoTrain" class="btn btn-secondary" style="width: 100%;">
+            <span id="autoTrainIcon">&#x25B6;</span> <span id="autoTrainText">Enable Continuous Auto-Training</span>
+          </button>
+        </div>
+
+        <div class="privacy-meter-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.8rem; font-weight:600; color:var(--text-secondary);">Privacy Tier Status:</span>
+            <span id="privacyTierBadge" class="tier-badge">Strong Privacy</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">
+            Target &delta; = 10<sup>-5</sup> &bull; Guarantees protection against Model Inversion and Membership Inference attacks.
+          </div>
+        </div>
+      </section>
+
+      <!-- Security Incidents & Edge Countermeasures -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <h2><span>&#x1F6A8;</span> Edge Mitigations & Alert Feed</h2>
+          <button id="btnResetMitigations" class="btn btn-secondary" style="font-size:0.7rem; padding:0.25rem 0.6rem;">Flush Rules</button>
+        </div>
+
+        <div class="alerts-list" id="alertsList">
+          <div class="empty-state">No active DDoS anomalies detected. Network is healthy.</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Row 3: Real-time Telemetry & Convergence Charts -->
+    <section class="panel-card">
+      <div class="panel-header">
+        <h2><span>&#x1F4CA;</span> Real-Time Network Telemetry & Model Convergence</h2>
+        <span class="panel-badge">Live Stream</span>
+      </div>
+
+      <div class="charts-grid">
+        <div>
+          <h3 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Live Network Traffic Ingress (Packets/Sec)</h3>
+          <div class="chart-wrapper">
+            <canvas id="trafficChart"></canvas>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">DDoS Anomaly Probability (% Confidence)</h3>
+          <div class="chart-wrapper">
+            <canvas id="ddosProbChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <h3 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Federated Learning Convergence (Test Accuracy % vs Privacy Budget &epsilon;)</h3>
+        <div class="chart-wrapper" style="height: 220px;">
+          <canvas id="flConvergenceChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
